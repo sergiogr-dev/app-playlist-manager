@@ -6,11 +6,11 @@ import com.sergiodev.appplaylistmanager.domain.exception.type.CommonException;
 import com.sergiodev.appplaylistmanager.web.util.ApiResponse;
 import com.sergiodev.appplaylistmanager.web.util.ApiResponseBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.MDC;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ServerWebExchange;
 
 import java.util.Optional;
 
@@ -21,8 +21,11 @@ import static java.util.Objects.isNull;
 public class ApiExceptionHandler implements ApiResponseBuilder {
 
     @ExceptionHandler(ApplicationException.class)
-    public ResponseEntity<ApiResponse<?>> handleBusinessRuleException(ApplicationException ex) {
-        String traceId = MDC.get("traceId");
+    public ResponseEntity<ApiResponse<?>> handleBusinessRuleException(ApplicationException ex, ServerWebExchange exchange) {
+        String traceId = exchange.getResponse().getHeaders().getFirst("X-Trace-Id");
+        if (traceId == null) {
+            traceId = "unknown";
+        }
         String[] errorDetail = { ex.getMessage() };
         return ResponseEntity
             .status(ex.getHttpStatus())
@@ -30,9 +33,12 @@ public class ApiExceptionHandler implements ApiResponseBuilder {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<?>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        log.error("Error validating request {}", getExceptionInfo(ex));
-        String traceId = MDC.get("traceId");
+    public ResponseEntity<ApiResponse<?>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, ServerWebExchange exchange) {
+        String traceId = exchange.getResponse().getHeaders().getFirst("X-Trace-Id");
+        if (traceId == null) {
+            traceId = "unknown";
+        }
+        log.error("Error validating request {} - traceId {}", getExceptionInfo(ex), traceId);
         String[] errorDetail = { ex.getMessage() };
         CommonException.Type bseType = CommonException.Type.VALIDATION_ERROR;
         return  ResponseEntity
@@ -41,9 +47,12 @@ public class ApiExceptionHandler implements ApiResponseBuilder {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<?>> handleUnknownHostException(Exception ex) {
-        log.error("Uncaught exception {}", getExceptionInfo(ex));
-        String traceId = MDC.get("traceId");
+    public ResponseEntity<ApiResponse<?>> handleUnknownHostException(Exception ex, ServerWebExchange exchange) {
+        String traceId = exchange.getResponse().getHeaders().getFirst("X-Trace-Id");
+        if (traceId == null) {
+            traceId = "unknown";
+        }
+        log.error("Uncaught exception {} - traceId: {}", getExceptionInfo(ex), traceId);
         String[] errorDetail = { ex.getMessage() };
         CommonException.Type bseType = CommonException.Type.GENERIC_ERROR;
         return  ResponseEntity
