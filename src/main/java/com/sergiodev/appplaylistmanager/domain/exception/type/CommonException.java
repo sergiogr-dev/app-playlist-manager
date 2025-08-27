@@ -28,7 +28,7 @@ public class CommonException extends ApplicationException {
             "The resource you are looking for was not found. Key: %s"
         ),
         RESOURCE_ALREADY_EXISTS(
-            HttpStatus.CONFLICT,
+            HttpStatus.BAD_REQUEST,
             "Resource Already Exists",
             "GEN-008",
             "The resource you are trying to create already exists. Key: %s"

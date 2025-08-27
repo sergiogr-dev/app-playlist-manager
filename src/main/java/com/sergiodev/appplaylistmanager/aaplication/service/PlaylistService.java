@@ -5,6 +5,7 @@ import com.sergiodev.appplaylistmanager.domain.exception.type.CommonException;
 import com.sergiodev.appplaylistmanager.domain.model.Playlist;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -18,5 +19,13 @@ public class PlaylistService {
                 Mono.error(CommonException.Type.RESOURCE_ALREADY_EXISTS.build(playlist.name())) :
                 playlistRepository.save(playlist)
             );
+    }
+
+    public Mono<Playlist> findById(String name) {
+        return playlistRepository.findByName(name);
+    }
+
+    public Flux<Playlist> findAll() {
+        return playlistRepository.findAll();
     }
 }
