@@ -14,16 +14,14 @@ import java.sql.SQLException;
 public class H2ConsoleConfig {
 
     private Server webServer;
-    private Server tcpServer;
 
     @EventListener(ContextRefreshedEvent.class)
     public void start() throws SQLException {
-        Server.createWebServer("-webPort", "8082", "-webAllowOthers").start();
+        webServer = Server.createWebServer("-webPort", "8082", "-webAllowOthers").start();
     }
 
     @EventListener(ContextClosedEvent.class)
     public void stop() {
-        if (tcpServer != null) tcpServer.stop();
         if (webServer != null) webServer.stop();
     }
 }
