@@ -3,7 +3,7 @@ package com.sergiodev.appplaylistmanager.web.exception;
 import com.sergiodev.appplaylistmanager.domain.exception.ApplicationException;
 import com.sergiodev.appplaylistmanager.domain.exception.model.ExceptionInfo;
 import com.sergiodev.appplaylistmanager.domain.exception.type.CommonException;
-import com.sergiodev.appplaylistmanager.web.util.ApiResponse;
+import com.sergiodev.appplaylistmanager.web.util.StandardizeApiResponse;
 import com.sergiodev.appplaylistmanager.web.util.ApiResponseBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import static java.util.Objects.isNull;
 public class ApiExceptionHandler implements ApiResponseBuilder {
 
     @ExceptionHandler(ApplicationException.class)
-    public ResponseEntity<ApiResponse<?>> handleBusinessRuleException(ApplicationException ex, ServerWebExchange exchange) {
+    public ResponseEntity<StandardizeApiResponse<?>> handleBusinessRuleException(ApplicationException ex, ServerWebExchange exchange) {
         String traceId = exchange.getResponse().getHeaders().getFirst("X-Trace-Id");
         if (traceId == null) {
             traceId = "unknown";
@@ -33,7 +33,7 @@ public class ApiExceptionHandler implements ApiResponseBuilder {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<?>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, ServerWebExchange exchange) {
+    public ResponseEntity<StandardizeApiResponse<?>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, ServerWebExchange exchange) {
         String traceId = exchange.getResponse().getHeaders().getFirst("X-Trace-Id");
         if (traceId == null) {
             traceId = "unknown";
@@ -47,7 +47,7 @@ public class ApiExceptionHandler implements ApiResponseBuilder {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<?>> handleUnknownHostException(Exception ex, ServerWebExchange exchange) {
+    public ResponseEntity<StandardizeApiResponse<?>> handleUnknownHostException(Exception ex, ServerWebExchange exchange) {
         String traceId = exchange.getResponse().getHeaders().getFirst("X-Trace-Id");
         if (traceId == null) {
             traceId = "unknown";

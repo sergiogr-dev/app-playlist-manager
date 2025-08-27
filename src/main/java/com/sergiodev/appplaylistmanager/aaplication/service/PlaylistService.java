@@ -28,4 +28,12 @@ public class PlaylistService {
     public Flux<Playlist> findAll() {
         return playlistRepository.findAll();
     }
+
+    public Mono<Void> deleteByName(String name) {
+        return playlistRepository.existsByNameIgnoreCase(name)
+            .flatMap(exists -> exists ?
+                playlistRepository.deleteByName(name) :
+                Mono.error(CommonException.Type.RESOURCE_NOT_FOUND.build(name))
+            );
+    }
 }

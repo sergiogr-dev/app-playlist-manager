@@ -9,4 +9,5 @@ public interface PlaylistRepository {
     Mono<Boolean> existsByNameIgnoreCase(String name);
     Mono<Playlist> findByName(String name);
     Flux<Playlist> findAll();
+    Mono<Void> deleteByName(String name);
 }

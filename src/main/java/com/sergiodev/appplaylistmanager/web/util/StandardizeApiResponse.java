@@ -8,7 +8,7 @@ import lombok.Builder;
 @Builder(toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(description = "Respuesta estandarizada de la API para todos los endpoints.")
-public record ApiResponse<T>(
+public record StandardizeApiResponse<T>(
     @Schema(description = "Indica si la solicitud fue exitosa.", example = "true")
     Boolean success,
 

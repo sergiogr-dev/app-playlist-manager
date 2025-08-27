@@ -53,4 +53,11 @@ public class PlayListRepositoryAdapter implements PlaylistRepository {
             .flatMapMany(Flux::fromIterable)
             .map(playlistDataMapper::toDomain);
     }
+
+    @Override
+    public Mono<Void> deleteByName(String name) {
+        return Mono.fromRunnable(() -> playListJpaRepository.deleteByName(name))
+            .subscribeOn(Schedulers.boundedElastic())
+            .then();
+    }
 }
