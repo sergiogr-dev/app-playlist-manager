@@ -23,3 +23,6 @@ springdoc:
   use-management-port: false
   paths-to-match: /**
   override-with-generic-response: false
+spotify:
+  client-id: ${SPOTIFY_CLIENT_ID}
+  client-secret: ${SPOTIFY_CLIENT_SECRET}
