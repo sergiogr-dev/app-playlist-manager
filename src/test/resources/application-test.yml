@@ -1,0 +1,48 @@
+spring:
+  profiles:
+    active: test
+  application:
+    name: app-playlist-manager-test
+  datasource:
+    url: jdbc:h2:mem:test_playlist_manager_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+
+  jwt:
+    secret: "dGhpcyBpcyBhIHZlcnkgc2VjdXJlIGtleSBmb3IgSldUIHRva2VuIHNpZ25pbmcgYW5kIHZhbGlkYXRpb24gd2l0aCA1MTIgYml0cw=="
+    expiration: 3600000 # 1 hour
+    refresh-expiration: 86400000 # 24 hours
+    issuer: "app-playlist-manager-test"
+
+security:
+  cors:
+    allowed-origins: 
+      - "http://localhost:3000"
+      - "http://localhost:8080"
+    allowed-methods: 
+      - "GET"
+      - "POST"
+      - "PUT" 
+      - "DELETE"
+      - "OPTIONS"
+    allowed-headers: 
+      - "*"
+    allow-credentials: true
+
+logging:
+  level:
+    com.sergiodev.appplaylistmanager: INFO
+    org.springframework.security: WARN
+    org.springframework.web: WARN
