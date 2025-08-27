@@ -1,0 +1,9 @@
+package com.sergiodev.appplaylistmanager.aaplication.port.out;
+
+import com.sergiodev.appplaylistmanager.domain.model.Playlist;
+import reactor.core.publisher.Mono;
+
+public interface PlaylistRepository {
+    Mono<Playlist> save(Playlist playlist);
+    Mono<Boolean> existsByNameIgnoreCase(String name);
+}
