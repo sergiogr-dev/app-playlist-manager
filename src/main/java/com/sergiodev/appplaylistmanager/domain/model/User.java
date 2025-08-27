@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "users")
 @Data
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails {
