@@ -1,0 +1,25 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: app-playlist-manager
+  datasource:
+    url: jdbc:h2:mem:playlist_manager_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    #    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui
+  use-management-port: false
+  paths-to-match: /**
+  override-with-generic-response: false
