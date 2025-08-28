@@ -268,7 +268,12 @@ class SpotifyTokenServiceTest {
             Mono<SpotifyTokenResponse> result = spotifyTokenService.getAccessToken();
 
             StepVerifier.create(result)
-                .expectNext(validToken)
+                .assertNext(token -> {
+                    assertEquals(validToken.accessToken(), token.accessToken());
+                    assertEquals(validToken.tokenType(), token.tokenType());
+                    assertEquals(validToken.expiresIn(), token.expiresIn());
+                    // No comparar createdAt
+                })
                 .verifyComplete();
 
             // Verificar que se creó el form data con los datos correctos

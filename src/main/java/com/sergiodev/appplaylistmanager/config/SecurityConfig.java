@@ -94,12 +94,18 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // Configuración específica para desarrollo
-        configuration.setAllowedOriginPatterns(List.of("http://localhost:*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
+        // Usar las propiedades del application.yml
+        List<String> allowedOrigins = securityProperties.getCors().getAllowedOrigins();
+
+        // Configurar allowed origin patterns para soportar wildcards
+        configuration.setAllowedOriginPatterns(allowedOrigins);
+
+        List<String> allowedMethods = securityProperties.getCors().getAllowedMethods();
+
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
-        configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Trace-Id"));
+        configuration.setAllowCredentials(securityProperties.getCors().getAllowCredentials());
+        configuration.setAllowedMethods(allowedMethods);
         configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
